@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Financial_Client</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\..\System\Financial-Service\Financial.Application\Protos\Financial.proto" GrpcServices="Client">
+      <Link>Protos\Financial.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\System\Financial-Service\Financial.Application\Protos\PaymentTerms.proto" GrpcServices="Client">
+      <Link>Protos\PaymentTerms.proto</Link>
+    </Protobuf>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+</Project>
