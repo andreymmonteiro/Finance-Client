@@ -6,20 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\System\Financial-Service\Financial.Application\Protos\Financial.proto" GrpcServices="Client">
+    <Protobuf Include="..\Financial-Service\Financial.Application\Protos\Financial.proto" GrpcServices="Client">
       <Link>Protos\Financial.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\System\Financial-Service\Financial.Application\Protos\PaymentTerms.proto" GrpcServices="Client">
+    <Protobuf Include="..\Financial-Service\Financial.Application\Protos\PaymentTerms.proto" GrpcServices="Client">
       <Link>Protos\PaymentTerms.proto</Link>
     </Protobuf>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

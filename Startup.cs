@@ -1,3 +1,6 @@
+using Financial.Application.Protos;
+using Financial_Client.Mapper;
+using Financial_Client.Mapper.Interface;
 using Financial_Client.Services;
 using Financial_Client.Services.Interface;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +19,11 @@ namespace Financial_Client
 {
     public class Startup
     {
+        private const string FINANCE_CLIENT = "GrpcSettings:UserUrl";
+        private const string SWAGGERFILE_PATH = "./swagger/v1/swagger.json";
+        private const string API_VERSION = "v1";
+        public const string PROJECT_NAME = "Financial API";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,8 +34,17 @@ namespace Financial_Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            //services.AddRazorPages();
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(API_VERSION, new OpenApiInfo { Title = PROJECT_NAME, Version = API_VERSION });
+            });
             services.AddScoped<IFinanceAccountsService, FinanceAccountsService>();
+            services.AddScoped<IPaymentTermsService, PaymentTermsService>();
+            services.AddScoped<IPaymentTermsItemsService, PaymentTermsItemsService>();
+            services.AddScoped<IMapperService, MapperService>();
+            services.AddGrpcClient<FinanceAccountsProtoService.FinanceAccountsProtoServiceClient>(options => options.Address = new Uri(Configuration[FINANCE_CLIENT]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,8 +61,16 @@ namespace Financial_Client
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            // Swagger
+            app.UseSwagger()
+               .UseSwaggerUI(c =>
+               {
+                   c.RoutePrefix = string.Empty;
+                   c.SwaggerEndpoint(SWAGGERFILE_PATH, PROJECT_NAME + API_VERSION);
+               });
+
+            //app.UseHttpsRedirection();
+            //app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -52,7 +78,8 @@ namespace Financial_Client
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                //endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
