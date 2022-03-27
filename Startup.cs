@@ -40,11 +40,13 @@ namespace Financial_Client
             {
                 c.SwaggerDoc(API_VERSION, new OpenApiInfo { Title = PROJECT_NAME, Version = API_VERSION });
             });
+            services.AddGrpcClient<FinanceAccountsProtoService.FinanceAccountsProtoServiceClient>(options => options.Address = new Uri(Configuration[FINANCE_CLIENT]));
+            services.AddGrpcClient<PaymentTermsProtoService.PaymentTermsProtoServiceClient>(options => options.Address = new Uri(Configuration[FINANCE_CLIENT]));
             services.AddScoped<IFinanceAccountsService, FinanceAccountsService>();
             services.AddScoped<IPaymentTermsService, PaymentTermsService>();
             services.AddScoped<IPaymentTermsItemsService, PaymentTermsItemsService>();
             services.AddScoped<IMapperService, MapperService>();
-            services.AddGrpcClient<FinanceAccountsProtoService.FinanceAccountsProtoServiceClient>(options => options.Address = new Uri(Configuration[FINANCE_CLIENT]));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

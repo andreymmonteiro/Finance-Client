@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Financial.Application.Protos;
 using Financial.Domain.Dtos.FinanceAccounts;
+using Financial_Client.Mapper.Interface;
 using Financial_Client.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -14,10 +15,10 @@ namespace Financial_Client.Controllers
         private readonly IFinanceAccountsService _service;
         private readonly IMapper _mapper;
 
-        public FinancialController(IFinanceAccountsService service, IMapper mapper)
+        public FinancialController(IFinanceAccountsService service, IMapperService mapper)
         {
             _service = service;
-            _mapper = mapper;
+            _mapper = mapper.GetMapper();
         }
 
         [HttpPost("create")]
